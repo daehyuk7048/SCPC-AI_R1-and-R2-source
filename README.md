@@ -108,11 +108,7 @@ task JSON ──▶ prepare()            stream 안의 persistent_memory_write �
 
 ---
 
-## 4. 개발 방식
-
-설계·구현·검증에 AI 코딩 도구 **Anthropic Claude Code**를 사용했습니다. 미션 정의, 판단 기준, 검증 설계, 채택 여부는 참가자가 결정했고 최종 책임도 참가자에게 있습니다. 도구에 전송한 데이터는 소스·대회 공개 Kit 문서·합성 데이터뿐이며 개인정보·실사용자 데이터는 없습니다. 상세 고지는 `R2/chebi/THIRD_PARTY_NOTICES.md`.
-
-## 5. 저장소 구조
+## 4. 저장소 구조
 
 ```text
 data/                 # R1 (1차 예선) — Agent Harness
@@ -128,7 +124,7 @@ R2/                   # R2 (2차 예선) — Android 앱 "약지기"
 └── SUBMISSION_FINAL/ #   제출 문서 (BUILD_AND_SUBMISSION_INFO, 가이드·기술 노트 PDF)
 ```
 
-## 6. 이 저장소에 포함하지 않은 것
+## 5. 이 저장소에 포함하지 않은 것
 
 대회 참가 약관에 따라 **주최 측 배포 자료는 재배포하지 않습니다.** 아래 파일은 데이콘 대회 페이지에서 직접 받으세요.
 
@@ -137,7 +133,7 @@ R2/                   # R2 (2차 예선) — Android 앱 "약지기"
 - 데이터에서 파생된 산출물: `submission*.csv`, 공식 Runner 실행 결과(`RUN_*`, `EVIDENCE_*`, `SAMPLE_EXPORT`)
 - 앱 서명 키(`R2/keystore/`), 빌드 산출물(APK, `.gradle/`, `build/`), 데모 영상
 
-## 7. 실행
+## 6. 실행
 
 **R1** — `data/data/` 아래에 `screening_tasks.jsonl`을 두고 `python data/harness.py`. 같은 폴더에 `submission.csv`가 생성됩니다. 상세는 [`data/README.md`](data/README.md).
 
