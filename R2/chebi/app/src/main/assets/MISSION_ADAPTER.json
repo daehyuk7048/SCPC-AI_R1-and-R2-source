@@ -1,0 +1,118 @@
+{
+  "schema_version": "3.0.0-draft",
+  "artifact_kind": "mission_probe_adapter",
+  "role_bindings": {
+    "PRIMARY_GOAL": {
+      "mission_meaning": "대혁의 이번 복용 세션 목표(안전한 복용 세션 완료) — 확인된 복용 체크리스트 생성·확정이 성공상태",
+      "production_state_field": "entities.goal",
+      "evidence_path": "evidence/state/current_goal.json"
+    },
+    "TARGET_ENTITY": {
+      "mission_meaning": "현재 판단 대상인 약(예: 혈압약 med_bp) — 이번 세션 판단의 대상",
+      "production_state_field": "entities.target",
+      "evidence_path": "evidence/state/target_entity.json"
+    },
+    "DISTRACTOR_ENTITY": {
+      "mission_meaning": "배우자의 약(med_spouse) — 관리 대상이 아닌 혼동 원천으로, 판단 context에서 배제되어야 하는 유사 대상",
+      "production_state_field": "entities.distractors",
+      "evidence_path": "evidence/state/context_selection.json"
+    },
+    "STABLE_VALUE": {
+      "mission_meaning": "세션을 넘어 재사용하는 상시 기억(FACT — 예: 상시 처방 내용, 잔량·임계 기록, 알림 예약)",
+      "production_state_field": "memories[lifetime=STABLE]",
+      "evidence_path": "evidence/state/facts.json"
+    },
+    "ONE_OFF_VALUE": {
+      "mission_meaning": "일회성·기한형 기억(EPHEMERAL). 일회성(ONE_OFF)은 같은 학습 인스턴스가 첫 사용 후 소모되고(명시적 재학습은 새 인스턴스), 기한형(TERM — 예: 이번 주만 항생제)은 기한 내 세션마다 재사용되며 기한 경과 시 만료됨",
+      "production_state_field": "memories[lifetime=ONE_OFF|TERM]",
+      "evidence_path": "evidence/state/facts.json"
+    },
+    "CURRENT_AUTHORITY": {
+      "mission_meaning": "약 단위의 현재 유효한 의사 지시 버전(예: 혈압약 bp_v1→bp_v2) — 그 약의 구지시 기억 재사용을 차단하는 권위. 다른 약의 지시에는 영향 없음",
+      "production_state_field": "authorities (entity별 map)",
+      "evidence_path": "evidence/state/authority.json"
+    },
+    "REVOKED_SCOPE": {
+      "mission_meaning": "철회된 범위(예: 특정 약 복용 중단 scope, 알림 경로 scope) — 해당 scope의 기억·미도착 리필 대기만 무효화·취소",
+      "production_state_field": "revoked_scopes",
+      "evidence_path": "evidence/state/invalidation.json"
+    },
+    "PRESERVED_SCOPE": {
+      "mission_meaning": "부분 중단·정정 뒤에도 유효하게 보존되는 다른 약의 체크리스트 부분",
+      "production_state_field": "memories[status=ACTIVE].scope",
+      "evidence_path": "evidence/state/recovery.json"
+    },
+    "DELAYED_OUTCOME": {
+      "mission_meaning": "승인된 리필 draft의 준비완료 지연 도착(가상시간 며칠 뒤) — 도착이 이후 세션의 잔량 판단과 프리필을 실제로 바꿈. 승인(DELAYED_OUTCOME 선언 학습)만이 리필 대기 등록의 트리거이며, 잔량 반영은 그 리필 도착 기억에만 반응(결정 자체의 일반 지연 결과와 구분)",
+      "production_state_field": "outcome_ledger",
+      "evidence_path": "evidence/ledger/outcomes.json"
+    },
+    "EPHEMERAL_VALUE": {
+      "mission_meaning": "사용자 삭제 뒤 원문이 어디에도 남으면 안 되는 민감 기억(합성 진단 메모) — 값 없는 tombstone(ID만)으로 대체",
+      "production_state_field": "tombstones",
+      "evidence_path": "evidence/state/tombstones.json"
+    }
+  },
+  "operation_bindings": {
+    "RESET_AND_START": {
+      "production_callback": "ChebiCore.execute/RESET_AND_START (resetAll)",
+      "observable_evidence": "빈 기억 원장·행동 원장, network ONLINE, 판단 카운터 0, epoch 0 기저"
+    },
+    "UPSERT_FACT": {
+      "production_callback": "ChebiCore.execute/UPSERT_FACT (upsertFromRoles — E1 학습·유형 분류)",
+      "observable_evidence": "memories에 lifetime STABLE/ONE_OFF/TERM·약별 권위·scope·기한·출처가 붙은 항목 생성, preserved_state_ids. scope 재부여는 철회 목록에서 해당 scope 제거(재허용)"
+    },
+    "ADVANCE_SESSION": {
+      "production_callback": "ChebiCore.execute/ADVANCE_SESSION (registerEntities — distractor 격리 등록)",
+      "observable_evidence": "session_id 전환(아침·저녁 복용 세션), 기억 지속(preserved), distractors 목록"
+    },
+    "REQUEST_DECISION": {
+      "production_callback": "ChebiCore.execute/REQUEST_DECISION (decide — 재사용 게이트)",
+      "observable_evidence": "selected_context_ids(유효·대상 약 관련 최소 context, 배우자 약 배제), decision_state(ACT/ASK/WAIT/ABSTAIN), ONE_OFF 소모 전이, action+outcome 대기 등록"
+    },
+    "CORRECT_FACT": {
+      "production_callback": "ChebiCore.execute/CORRECT_FACT (correctFromRoles — 충돌 게이트·약별 권위 정정)",
+      "observable_evidence": "그 약의 구지시 기억과 파생 항목만 invalidated_state_ids(권위 중립·타 약 기억은 영향 밖), 정정값의 신규 기억, preserved 분리"
+    },
+    "REVOKE_SCOPE": {
+      "production_callback": "ChebiCore.execute/REVOKE_SCOPE (revokeScope — scope 정밀 무효화 + 미도착 대기 취소)",
+      "observable_evidence": "철회 scope 항목만 invalidated, 나머지 preserved. 영향 약의 미도착 리필 대기는 취소되어 reconciled_events에 CANCELLED_PENDING 기재"
+    },
+    "DELETE_FACT": {
+      "production_callback": "ChebiCore.execute/DELETE_FACT (deleteFact — tombstone)",
+      "observable_evidence": "원문 제거, tombstone_ids(값 없는 ID만), 이후 어떤 경로에서도 삭제 원문의 자동 재등장 없음. 값 role 명시 시 그 값만, 없으면 entity 전체"
+    },
+    "SET_NETWORK": {
+      "production_callback": "ChebiCore.execute/SET_NETWORK (requestedNetwork — 값 기반 파싱)",
+      "observable_evidence": "network_state 전이(미완 행동·대기 결과가 있으면 decision_state는 PENDING으로 정직 보고). 전송 성격 결정(리필 draft)의 정직한 WAIT — 로컬 기록(UPSERT 계열)은 오프라인에서도 진행"
+    },
+    "PROCESS_KILL_RELAUNCH": {
+      "production_callback": "ChebiCore.ensureProcessEpoch + AndroidStateStore 복구",
+      "observable_evidence": "process_epoch 증가, 직전 step의 state_after_sha256 == 이번 step의 state_before_sha256 (전 구간 해시 체인 연속으로 무손실 복구 증명 — epoch 증가는 이 step의 변화로 기록)"
+    },
+    "REPLAY_EVENT": {
+      "production_callback": "ChebiCore.execute/REPLAY_EVENT (행동 원장 멱등 조회)",
+      "observable_evidence": "이벤트 재전달: 동일 action_id/idempotency_key 재반환·새 행동 미생성(복용 기록 이중 기재 차단). 라벨은 행동 원장 상태와 1:1 — 커밋 완료 CONFIRMED_COMPLETE / 결과 미도착(in-flight) PENDING / 취소 ABSTAIN. WAIT로 보류됐던 이벤트의 재전달: 원본 이벤트 ID로 정확히 1회 재시도(이벤트당 행동 최대 1개). 미지 이벤트: ABSTAIN"
+    },
+    "DELIVER_OUT_OF_ORDER": {
+      "production_callback": "ChebiCore.execute/DELIVER_OUT_OF_ORDER (reconcileOutOfOrder)",
+      "observable_evidence": "tombstone·권위 게이트 심사로 구지시 부활 차단(기각 사유 분리: REJECTED_TOMBSTONED/STALE_AUTHORITY/OUT_OF_ORDER) — 기억 원장 무변형(생성·무효화 0건), 기각 판정만 reconciled_events에 추가 기록"
+    },
+    "ADVANCE_TIME": {
+      "production_callback": "ChebiCore.execute/ADVANCE_TIME (arriveDueOutcomes — 지연 도착·기한 경과)",
+      "observable_evidence": "요청 시각이 지난 pending_outcomes만 outcome_ledger로 이동(도착 시각·이벤트 기록, 권위 중립 도착 기억 생성), 기한형 기억의 만료 관찰, 이후 판단 입력 변화"
+    },
+    "EXPORT_AND_END": {
+      "production_callback": "ChebiProbeAdapter.onRunFinished (run별 step ID 집계 반환, 집계 부재 시 ChebiCore.evidenceIds fallback)",
+      "observable_evidence": "receipt/evidence ID 목록 — 화면·state·원장과 일치하는 관찰 기록만"
+    }
+  },
+  "source_paths": [
+    "app/src/main/java/com/sdh/chebi/ChebiProbeAdapter.kt",
+    "app/src/main/java/com/sdh/chebi/ChebiCore.kt",
+    "app/src/main/java/com/sdh/chebi/MedDomain.kt",
+    "app/src/test/java/com/sdh/chebi/ChebiCoreTest.kt",
+    "app/src/test/java/com/sdh/chebi/UiFlowReplayTest.kt",
+    "app/src/test/java/com/sdh/chebi/SameAdapterPathTest.kt"
+  ]
+}

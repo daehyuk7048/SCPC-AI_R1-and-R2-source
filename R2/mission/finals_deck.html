@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>SCPC2026_본선발표자료_SDH</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Malgun Gothic", "맑은 고딕", sans-serif; color: #17211b; }
+  .slide { width: 296.5mm; height: 209mm; page-break-after: always; padding: 11mm 15mm 9mm 15mm;
+           position: relative; background: #fbfcfb; overflow: hidden; }
+  .slide:last-child { page-break-after: auto; }
+
+  .tag { position: absolute; top: 7mm; right: 15mm; font-size: 8.5pt; color: #6b7a70; }
+  .foot { position: absolute; bottom: 5.5mm; left: 15mm; right: 15mm; font-size: 7.5pt; color: #8a968e;
+          border-top: 0.4px solid #d5ddd7; padding-top: 1.6mm; display: flex; justify-content: space-between; }
+
+  h1 { font-size: 21pt; color: #123c22; margin-bottom: 1.5mm; }
+  h2 { font-size: 17pt; color: #123c22; border-left: 4.5px solid #1B5E20; padding-left: 4mm; margin-bottom: 5mm; }
+  h3 { font-size: 11.5pt; color: #1B5E20; margin-bottom: 1.8mm; }
+  p, li { font-size: 10.5pt; line-height: 1.58; word-break: keep-all; }
+  li { margin-bottom: 1.8mm; }
+  ul { margin-left: 5mm; }
+  b { color: #123c22; }
+  .red { color: #b33a2f; }
+  .dim { color: #55655c; font-size: 9pt; }
+
+  .row { display: flex; gap: 5mm; }
+  .col { flex: 1; }
+  .card { background: #fff; border: 0.6px solid #d5ddd7; border-radius: 2.4mm; padding: 4.2mm 4.8mm;
+          box-shadow: 0 0.4mm 1.2mm rgba(20,40,28,0.05); }
+  .card.accent { border-top: 2.5px solid #1B5E20; }
+  .card.warn { border-top: 2.5px solid #C62828; }
+  .card.amberline { border-top: 2.5px solid #d9a400; }
+
+  .kpi { text-align: center; padding: 4mm 2mm; }
+  .kpi .num { font-size: 22pt; font-weight: 700; color: #1B5E20; }
+  .kpi .lab { font-size: 9pt; color: #55655c; margin-top: 1.2mm; line-height: 1.4; }
+
+  .chain { display: flex; align-items: stretch; gap: 0; margin: 3mm 0; }
+  .chain .step { flex: 1; background: #fff; border: 0.7px solid #bcd0c2; border-radius: 2mm;
+                 padding: 3.4mm 3.6mm; position: relative; }
+  .chain .step h4 { font-size: 11pt; color: #1B5E20; margin-bottom: 1.6mm; }
+  .chain .step p { font-size: 9.2pt; line-height: 1.5; }
+  .chain .arrow { align-self: center; font-size: 14pt; color: #1B5E20; padding: 0 1.6mm; font-weight: 700; }
+
+  table { border-collapse: collapse; width: 100%; background: #fff; }
+  th, td { border: 0.5px solid #c3cfc7; padding: 2mm 2.6mm; font-size: 9.6pt; text-align: left; word-break: keep-all; line-height: 1.5; }
+  th { background: #e7efe9; color: #123c22; }
+  td.center, th.center { text-align: center; }
+  .good { color: #1B5E20; font-weight: 700; }
+  .bad { color: #C62828; font-weight: 700; }
+
+  .shot { border: 0.7px solid #b9c6bd; border-radius: 2mm; overflow: hidden; background: #000; height: 104mm; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .cap { font-size: 8.8pt; color: #55655c; margin-top: 1.6mm; text-align: center; line-height: 1.5; }
+
+  .cover { background: linear-gradient(150deg, #0e2c19 0%, #164a2a 60%, #1B5E20 100%); color: #f2f7f3;
+           display: flex; flex-direction: column; justify-content: center; padding: 0 24mm; }
+  .cover .kicker { font-size: 12pt; letter-spacing: 0.12em; color: #a9d0b4; margin-bottom: 6mm; }
+  .cover h1 { font-size: 34pt; color: #fff; margin-bottom: 4mm; }
+  .cover .slogan { font-size: 15pt; color: #dceadf; margin-bottom: 10mm; line-height: 1.65; }
+  .cover .meta2 { font-size: 10.5pt; color: #a9d0b4; }
+  .cover .medban { position: absolute; bottom: 12mm; left: 24mm; right: 24mm; font-size: 8.5pt; color: #8fb89c;
+                   border-top: 0.5px solid #2d6b3f; padding-top: 3mm; line-height: 1.55; }
+</style>
+</head>
+<body>
+
+<!-- S1 표지 -->
+<div class="slide cover">
+  <div class="kicker">SCPC 2026 예선 2차 — Long-Horizon Mobile Agent · 본선 발표</div>
+  <h1>약지기 — 진화형 복약 관리</h1>
+  <div class="slogan">매일 약 챙기는 일을 <b style="color:#fff">대신 기억해 주고</b>,<br>
+  낡거나 틀린 기억은 <b style="color:#fff">다시 쓰지 않는</b> 복약 도우미 앱입니다.</div>
+  <div class="meta2">참가자 · 데이콘 닉네임 SDH</div>
+  <div class="medban">이 앱은 의료 조언이나 진단, 복약 지시가 아닙니다. 의사 지시의 최신 내용을 기억해 두었다가 보여줄 뿐이며, 복용은 항상 사용자가 마지막으로 확인해야 확정됩니다. 나오는 인물과 건강 정보는 모두 가상으로 만든 것입니다.</div>
+</div>
+
+<!-- S2 Mission 개요 -->
+<div class="slide">
+  <div class="tag">1. Mission 개요</div>
+  <h2>문제. 약은 두 종류인데, 확인은 매일 반복됩니다</h2>
+  <div class="card accent" style="margin-bottom:4.5mm">
+    <p><b>대상 사용자.</b> 혼자 사시는 71세 어르신입니다. 가상의 인물입니다.
+    이분은 <b>계속 먹는 혈압약</b>과 <b>이번 주만 먹는 항생제</b>를 함께 드십니다.
+    그래서 매일 아침저녁으로 오늘 무슨 약을 몇 알 먹는지, 남은 약이 며칠치인지 확인해야 합니다.
+    잊어도 안 되고, 헷갈려도 안 됩니다. 요즘은 어르신들도 스마트폰을 쓰십니다.
+    그래서 <b>폰이 이 확인을 대신 기억해 주게 하자</b>는 것이 이 앱의 출발점입니다.</p>
+  </div>
+  <p style="margin-bottom:2.5mm"><b>그런데 단순한 알림 앱이나 메모 앱을 오래 쓰면, 세 가지 순간에 무너집니다.</b></p>
+  <div class="row" style="margin-bottom:4.5mm">
+    <div class="col card warn"><h3 class="red">반복될 때</h3>
+      <p>어제 목록을 오늘 또 그대로 보여줍니다. <b>다 먹고 끝난 항생제가 계속 나타나고</b>, 바뀌기 전 처방이 계속 보입니다.</p></div>
+    <div class="col card warn"><h3 class="red">끊길 때</h3>
+      <p>확인하는 도중에 앱이 꺼지면 기록이 사라집니다. 같은 기록이 <b>두 번 적히기도</b> 합니다.</p></div>
+    <div class="col card warn"><h3 class="red">바뀔 때</h3>
+      <p>처방이 바뀌거나 약을 끊은 날에도 <b>옛날 내용을 그대로</b> 보여줍니다.</p></div>
+  </div>
+  <div class="card accent" style="text-align:center; padding:5mm">
+    <p style="font-size:12.5pt"><b>세 문제의 뿌리는 하나입니다. 지금도 맞는 기억이 무엇인지 가려내고, 낡은 부분만 고치면 됩니다.</b></p>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>2 / 14</span></div>
+</div>
+
+<!-- S3 핵심 가치 -->
+<div class="slide">
+  <div class="tag">2. 설계 의도 — 핵심 가치</div>
+  <h2>이 앱의 약속은 하나입니다. 믿을 수 있는 기억만 다시 씁니다</h2>
+  <div class="row" style="margin-bottom:5mm">
+    <div class="col card">
+      <h3>덜 묻습니다</h3>
+      <p>아직 맞는 처방 기억만 골라 오늘 목록을 <b>미리 채워 줍니다</b>.
+      매일 아침 처음부터 다시 입력할 필요가 없습니다.</p>
+    </div>
+    <div class="col card">
+      <h3>틀린 기억은 쓰지 않습니다</h3>
+      <p>끝난 약, 바뀌기 전 처방, 끊은 약은 <b>목록에서 저절로 빠집니다</b>.
+      잘못된 재사용은 0건이 목표입니다. 만약 생기면 기록에 남기고, 그 부분만 되돌립니다.</p>
+    </div>
+  </div>
+  <div class="card accent" style="margin-bottom:5mm">
+    <p><b>이 둘은 서로 다른 기능이 아니라 한 장치의 양면입니다.</b>
+    이 기억을 지금도 믿어도 되는지 따지는 <b>장부 하나</b>가, 채울 것과 뺄 것을 같이 정합니다.
+    그리고 아무리 자동이라도 <b>먹기 전 마지막 확인은 항상 사람이 합니다</b>. 그 확인도 기록으로 남습니다.</p>
+  </div>
+  <div class="row">
+    <div class="col card kpi"><div class="num">1</div><div class="lab">가치 하나, 장부 하나</div></div>
+    <div class="col card kpi"><div class="num">0건</div><div class="lab">잘못된 재사용 목표<br>10쪽 비교 실험으로 확인</div></div>
+    <div class="col card kpi"><div class="num">100%</div><div class="lab">복용 확정은<br>항상 사용자의 마지막 확인</div></div>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>3 / 14</span></div>
+</div>
+
+<!-- S4 서비스 흐름 + 모바일 -->
+<div class="slide">
+  <div class="tag">2. 설계 의도 — 흐름과 모바일</div>
+  <h2>쓰는 흐름, 그리고 왜 폰이어야 하는가</h2>
+  <div class="chain" style="margin-bottom:5mm">
+    <div class="step"><h4>① 알려주기</h4><p>처방을 등록합니다. 무슨 약을 언제까지 몇 알 먹는지, 남은 개수까지 적습니다.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><h4>② 아침저녁 확인</h4><p>맞는 약만 목록에 미리 채워 줍니다. 마지막 확인을 하고 복용을 기록하면 잔량이 하나 줄어듭니다.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><h4>③ 약이 떨어져 가면</h4><p>약 다시 받기 신청서가 만들어집니다. 승인하면 며칠 뒤 도착해 잔량에 더해집니다.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><h4>④ 상황이 바뀌면</h4><p>처방 변경이나 복용 중단이 오면, 영향받은 기억만 고칩니다.</p></div>
+  </div>
+  <div class="row">
+    <div class="col card">
+      <h3>왜 폰이어야 하는가</h3>
+      <ul>
+        <li>약은 침대 옆, 부엌, 나들이 길에서 먹습니다. <b>폰이 있는 곳</b>입니다.</li>
+        <li>그런데 폰은 자주 꺼지고, 권한 설정이 바뀌고, 인터넷이 끊깁니다. <b>그런 날에도 기록은 이어져야 합니다.</b></li>
+        <li>늘 켜져 있는 컴퓨터에는 이런 어려움이 아예 없습니다. 뒤집어 말하면, <b>끊겨도 이어지는 기억</b>이라는 이 앱의 핵심 능력은 폰에서만 뜻이 있습니다.</li>
+      </ul>
+    </div>
+    <div class="col card">
+      <h3>실제 폰 환경을 그대로 다룹니다</h3>
+      <ul>
+        <li><b>알림 권한.</b> 거부해도 앱은 화면 확인용으로 정상 동작합니다. 쓰다가 권한을 끄면 알림에 딸린 기억만 효력을 잃습니다.</li>
+        <li><b>강제 종료.</b> 앱이 꺼졌다 켜져도 기록과 보류 중인 질문, 시각이 그대로 복구됩니다.</li>
+        <li><b>인터넷 끊김.</b> 확인과 기록은 계속 진행합니다. 보내야 하는 일만 솔직하게 대기로 표시하고, 연결되면 딱 한 번 다시 시도합니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>4 / 14</span></div>
+</div>
+
+<!-- S5 E1-E4 -->
+<div class="slide">
+  <div class="tag">3. 핵심 기능 — E1→E4</div>
+  <h2>네 단계. 앞 단계의 기록이 뒷 단계를 실제로 바꿉니다</h2>
+  <div class="chain" style="margin-bottom:4.5mm">
+    <div class="step" style="border-top:2.5px solid #1B5E20"><h4>E1 Learn</h4>
+      <p>기억마다 이름표를 붙여 적습니다. 혈압약은 <b>계속</b>, 항생제는 <b>이번 주까지</b>,
+      복용 시간대는 <b>기록에서 나온 짐작</b>. 언제까지 유효한지, 어느 지시에서 나왔는지도 함께 적습니다.</p></div>
+    <div class="arrow">→</div>
+    <div class="step" style="border-top:2.5px solid #1B5E20"><h4>E2 Reuse</h4>
+      <p>다음 확인 때 <b>아직 맞는 기억만</b> 목록에 미리 채웁니다. 기록할 때마다 잔량이 줄고,
+      모자라면 다시 받기 절차가 시작됩니다. 승인한 약은 <b>며칠 뒤 도착해 다음 판단을 바꿉니다.</b></p></div>
+    <div class="arrow">→</div>
+    <div class="step" style="border-top:2.5px solid #d9a400"><h4>E3 Exception</h4>
+      <p>처방 변경, 복용 중단, 권한 회수, 인터넷 끊김이 오면 옛 방식을 고집하지 않습니다.
+      <b>묻거나, 기다리거나, 멈춥니다.</b> 이유도 함께 남깁니다.</p></div>
+    <div class="arrow">→</div>
+    <div class="step" style="border-top:2.5px solid #C62828"><h4>E4 Recover</h4>
+      <p><b>영향받은 기억만</b> 되돌립니다. 항생제를 끊어도 혈압약 기록은 그대로입니다.
+      전체 초기화가 아니라 부분만 고칩니다.</p></div>
+  </div>
+  <div class="card accent">
+    <h3>기록이 다음 날을 바꾼다는 실제 증거, 세 가지</h3>
+    <ul>
+      <li>① <b>목록이 바뀝니다.</b> 끝난 약과 끊은 약은 다음 확인 목록에서 빠지고, 화면에 목록 제외라고 표시됩니다.</li>
+      <li>② <b>버튼이 바뀝니다.</b> 목록에 없는 약은 복용 기록 버튼 자체가 잠깁니다.</li>
+      <li>③ <b>도착이 반영됩니다.</b> 승인한 약만 며칠 뒤 잔량에 더해집니다. 승인하지 않으면 오지 않습니다.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>5 / 14</span></div>
+</div>
+
+<!-- S6 핵심 장치 -->
+<div class="slide">
+  <div class="tag">3. 핵심 기능 — 핵심 장치</div>
+  <h2>핵심 장치. 기억마다 유통기한을 붙인 장부 <span class="dim">제출명은 VG-Ledger</span></h2>
+  <div class="row" style="margin-bottom:4.5mm">
+    <div class="col card">
+      <h3>기억 한 건에 함께 적는 것</h3>
+      <table>
+        <tr><th style="width:32%">이름표</th><td>계속 쓰는 사실인지, 이번만인지, 기록에서 나온 짐작인지</td></tr>
+        <tr><th>믿어도 되는 조건</th><td>그 약의 지시가 최신인가. 기한이 지나지 않았는가. 끊지 않았는가. 권한이 있는가.</td></tr>
+        <tr><th>출처</th><td>어느 사건에서 생긴 기억인지. 고칠 때 이 연결선을 따라갑니다.</td></tr>
+        <tr><th>지운 흔적</th><td>지우면 내용은 없어지고, 지웠다는 기록만 남습니다. <b>지운 내용은 되살아나지 않습니다.</b></td></tr>
+      </table>
+    </div>
+    <div class="col card">
+      <h3>이 장부를 확인하는 세 번의 검문</h3>
+      <ul>
+        <li><b>① 쓸 때.</b> 조건에 맞는 기억만 목록에 올립니다. 배우자 약처럼 관리 밖 대상 앞에서는 판단을 멈춥니다.</li>
+        <li><b>② 바뀔 때.</b> 새 지시와 어긋나는 기억만 골라 효력을 없앱니다. 지시는 약마다 따로 봅니다. <b>항생제가 바뀌어도 혈압약은 건드리지 않습니다.</b></li>
+        <li><b>③ 고칠 때.</b> 효력을 잃은 기억에 딸린 것까지 함께 정리합니다. <b>나머지는 그대로 둡니다.</b></li>
+      </ul>
+      <p style="margin-top:2mm"><b>이 세 번의 검문이 곧 이 앱의 안전장치입니다.</b>
+      <span class="dim">화면의 목록 채우기도 똑같은 판정을 씁니다. 화면 따로, 검증 따로가 될 수 없습니다.</span></p>
+    </div>
+  </div>
+  <div class="card amberline">
+    <p><b>이 장치의 효과는 믿어 달라는 말이 아니라, 실험으로 보여 드립니다.</b></p>
+    <ul style="margin-top:1mm">
+      <li>① 끄는 스위치가 하나뿐입니다. 이 장치만 끈 똑같은 앱과 나란히 비교할 수 있습니다.</li>
+      <li>② 정답을 미리 적어 둡니다. 이 변화의 영향은 정확히 이 기억들이라는 답과 대조합니다.</li>
+      <li>③ 결과가 며칠 뒤에야 드러납니다. 기한 만료나 약 도착은 시간이 지나야 보여서, 첫 화면만 꾸며서는 흉내 낼 수 없습니다.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>6 / 14</span></div>
+</div>
+
+<!-- S7 화면·시나리오 -->
+<div class="slide">
+  <div class="tag">3. 핵심 기능 — 화면과 사용 흐름</div>
+  <h2>실제 화면. 핵심 사용 흐름 — 제출한 시연 영상(2분 36초)과 같은 순서</h2>
+  <div class="row">
+    <div class="col">
+      <div class="shot"><img src="deck_assets/scr_attr.jpg" alt=""></div>
+      <p class="cap">① 어떤 버튼을 눌러도 화면 위쪽에 <b>방금 누른 버튼과 그 결과</b>가 바로 표시됩니다.
+      마지막 확인에 체크해야 복용 기록 버튼이 열립니다.</p>
+    </div>
+    <div class="col">
+      <div class="shot"><img src="deck_assets/scr_climax.jpg" alt=""></div>
+      <p class="cap">② 약 다시 받기를 승인하고 사흘이 지나면 <b>잔량이 4에서 34로</b> 저절로 반영됩니다.
+      <b style="color:#1B5E20">늦게 도착한 결과가 다음 판단을 바꿉니다.</b></p>
+    </div>
+    <div class="col">
+      <div class="shot"><img src="deck_assets/scr_ledger.jpg" alt=""></div>
+      <p class="cap">③ 6쪽의 유통기한 장부를 화면으로 펼친 기억 장부입니다. 처방 변경과 중단 뒤에 무엇이 <b style="color:#1B5E20">유효</b>하고
+      무엇이 <b class="red">무효</b>가 됐는지 색으로 바로 구분됩니다.</p>
+    </div>
+  </div>
+  <p style="margin-top:3.5mm; font-size:10pt"><b>흐름.</b> 처방을 등록하고, 확인과 기록으로 잔량이 6에서 5가 됩니다.
+  한 번 더 기록해 4가 되면 기준 아래로 내려가 <b class="red">다시 받기 신청서가 저절로 생깁니다.</b>
+  승인하고 사흘 뒤 도착해 34가 됩니다. 이어서 처방 변경, 항생제 중단, 안전장치 비교, 증거 내보내기까지 확인합니다.</p>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>7 / 14</span></div>
+</div>
+
+<!-- S8 기술 구현 -->
+<div class="slide">
+  <div class="tag">4. 기술 구현</div>
+  <h2>구조. 화면도 검증 도구도 같은 두뇌 하나를 지납니다</h2>
+  <div class="chain" style="margin-bottom:4.5mm">
+    <div class="step"><h4>사용자 화면 버튼</h4><p>모든 버튼이 표준 형식의 사건으로 바뀌어 한 창구로 들어갑니다.</p></div>
+    <div class="arrow">→</div>
+    <div class="step" style="border:1.6px solid #1B5E20"><h4>두뇌. 판단 코어 하나</h4><p>기억 장부와 행동 장부를 들고,
+    13가지 사건을 정해진 규칙으로 처리합니다. 세 번의 검문도 여기서 이뤄집니다.</p></div>
+    <div class="arrow">←</div>
+    <div class="step"><h4>공식 검증 도구</h4><p>대회의 보호된 통로로 들어와 <b>완전히 같은 함수</b>를 부릅니다.
+    검증 연결 부품은 대회가 준 원본 그대로입니다.</p></div>
+  </div>
+  <div class="card accent" style="margin-bottom:4.5mm">
+    <p style="margin-bottom:1.2mm"><b>기억 장부</b>는 앱이 <b>아는 것</b>들의 목록입니다.
+    무슨 약을 언제까지 몇 알 먹는지, 잔량이 몇 개인지 같은 사실들이 적혀 있습니다.
+    6쪽에서 보신 유통기한 붙인 장부가 바로 이것입니다.</p>
+    <p><b>행동 장부</b>는 앱이 <b>한 일</b>들의 목록입니다.
+    약 다시 받기 신청처럼 결과가 따르는 일이, 하겠다 단계인지 됐다 단계인지와 함께 적혀 있습니다.
+    그래서 같은 일을 두 번 하지 않고, 끝났다고 꾸미지도 못합니다.</p>
+  </div>
+  <div class="row">
+    <div class="col card">
+      <h3>저장과 기록</h3>
+      <ul>
+        <li>모든 기록은 <b>폰 안에만</b> 저장합니다. 서버가 없습니다.</li>
+        <li>단계마다 상태의 <b>지문</b>을 남겨 앞뒤를 연결합니다. 중간에 바꿔치기하면 바로 드러납니다.</li>
+        <li>행동은 두 단계로 적습니다. <b>하겠다</b>, 그리고 결과가 온 뒤에 <b>됐다</b>. 중간에 앱이 꺼져도 됐다고 속이지 않습니다.</li>
+      </ul>
+    </div>
+    <div class="col card">
+      <h3>모델과 인터넷</h3>
+      <ul>
+        <li>인공지능 모델도, 서버도, 밖으로 보내는 데이터도 <b>없습니다</b>. 4쪽의 인터넷 전송·대기·재시도는 <b>앱 안의 가상 연결</b>로 재현해 검증했습니다. 정해진 규칙으로만 판단합니다.</li>
+        <li>그래서 <b>같은 입력이면 언제나 같은 결과</b>가 나옵니다. 어느 폰에서 돌려도 지문까지 같습니다.</li>
+        <li>시간은 가상 시계로 다룹니다. 사흘 뒤 일어날 일을 시연에서 바로 보여줄 수 있습니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>8 / 14</span></div>
+</div>
+
+<!-- S9 검증 -->
+<div class="slide">
+  <div class="tag">5. 검증 및 데모 결과</div>
+  <h2>검증. 스스로 여섯 번 헐뜯고, 기계로 다시 확인했습니다</h2>
+  <div class="row" style="margin-bottom:4.5mm">
+    <div class="col card kpi"><div class="num">6</div><div class="lab">자체 점검 라운드<br>마지막 라운드는 고칠 것 0건</div></div>
+    <div class="col card kpi"><div class="num">43</div><div class="lab">자동 테스트<br>고칠 때마다 재발 방지용 추가</div></div>
+    <div class="col card kpi"><div class="num">5회</div><div class="lab">공식 검증 도구 완주<br>공개 1종 + 자체 제작 비공개 4종</div></div>
+    <div class="col card kpi"><div class="num">35</div><div class="lab">화면 자동 검사 항목<br>새로 설치한 상태에서 전부 통과</div></div>
+  </div>
+  <div class="row">
+    <div class="col card accent">
+      <h3>보여드리는 앱과 심사받는 앱이, 같은 앱이라는 증명</h3>
+      <p style="margin-bottom:1.6mm">심사는 화면이 아니라 별도의 시험 통로로 이뤄집니다.
+      그래서 <b>시험 통로에만 잘 대답하는 앱을 따로 꾸미는 부정</b>이 이론상 가능하고,
+      저희는 그렇지 않다는 것을 실험으로 보였습니다.</p>
+      <p style="margin-bottom:1.6mm"><b>13단계란 대회가 공개한 표준 시험입니다.</b>
+      새로 시작해 배우고, 판단하고, 고치고, 지우고, 인터넷을 끊고, 앱을 강제로 껐다 켜고,
+      같은 요청을 겹쳐 보내고, 옛 사건을 늦게 도착시키는 것까지, 앱이 겪을 수 있는 일 열세 가지를 순서대로 겪게 합니다.</p>
+      <p>이 13단계를 화면 조작으로 한 번, 공식 검증 도구로 한 번 돌렸더니,
+      <b>강제 종료 전 여덟 단계는 상태의 지문까지 완전히 같았고, 판단과 선택은 열세 단계 전부 같았습니다.</b>
+      지문이 같으려면 상태가 바이트까지 같아야 하고, 상태가 같으려면 같은 규칙이 돌아야 합니다.
+      화면용과 시험용이 다른 코드였다면 이럴 수 없습니다.
+      남은 차이는 재시작 횟수 하나뿐인데, 공식 도구만 실제로 앱을 껐다 켰기 때문입니다.</p>
+    </div>
+    <div class="col card">
+      <h3>제출물과 이어지는 설명</h3>
+      <ul>
+        <li><b>SAMPLE_EXPORT.</b> 공개 13단계를 실제로 돌린 기록입니다. 증거 26개와 지문 사슬이 들어 있고, 제출 검사 도구를 통과했습니다.</li>
+        <li><b>DEMO_VIDEO.</b> 2분 36초. 앞 7쪽의 사용 흐름 그대로입니다. 화면에 보이는 것과 증거 파일은 같은 상태를 두 방식으로 본 것입니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>9 / 14</span></div>
+</div>
+
+<!-- S10 짝비교 -->
+<div class="slide">
+  <div class="tag">5. 검증 — 안전장치 효과 실험</div>
+  <h2>안전장치를 켠 앱과 끈 앱. 같은 조건으로 비교한 결과입니다</h2>
+  <div class="card amberline" style="margin-bottom:4mm">
+    <p><b>여기서 안전장치란, 6쪽에서 보신 세 번의 검문입니다.</b>
+    쓸 때는 지시가 최신인지, 기한이 지나지 않았는지, 끊거나 권한이 꺼지지 않았는지 확인해 <b>통과한 기억만 쓰고</b>,
+    바뀔 때는 새 지시와 어긋나는 기억만 골라 효력을 없애고, 고칠 때는 딸린 것까지만 정리합니다.
+    끄면 이 세 검문 없이 <b>살아있는 기억을 통째로 다시 씁니다</b>. 그래서 아래 표의 차이가 생깁니다.</p>
+  </div>
+  <div class="row" style="margin-bottom:4.5mm">
+    <div class="col" style="flex:1.5">
+      <table>
+        <tr><th>같은 사건 8개를 같은 순서로 겪게 한 결과</th><th class="center">안전장치 켬</th><th class="center">안전장치 끔</th></tr>
+        <tr><td>끝난 항생제가 목록에 다시 나타남</td><td class="center good">0번</td><td class="center bad">1번</td></tr>
+        <tr><td>처방 변경 때 영향 범위를 정확히 짚음</td><td class="center good">정확도 1.0</td><td class="center bad">정확도 0.4</td></tr>
+        <tr><td>변경 후에도 목록이 살아 있음</td><td class="center good">4건 유지</td><td class="center bad">1건만 남음</td></tr>
+        <tr><td>끝까지 완주</td><td class="center good">완주</td><td class="center good">완주</td></tr>
+      </table>
+      <p style="margin-top:2.5mm; font-size:9.8pt"><b>끈 쪽도 고장 난 앱이 아닙니다.</b> 직전 상태를 통째로 다시 쓰고,
+      충돌하면 전부 다시 확인하는 방식으로 끝까지 완주합니다. 차이는 안전장치 하나뿐입니다.
+      그래서 이 표의 차이는 전부 안전장치의 효과입니다.</p>
+    </div>
+    <div class="col card">
+      <h3>공정한 비교를 위해 지킨 것</h3>
+      <ul>
+        <li>같은 앱입니다. 코드에 끄는 스위치가 딱 하나 있습니다.</li>
+        <li>같은 시작 상태를 서로 완전히 분리된 저장 공간 두 곳에 복사했습니다.</li>
+        <li>같은 사건을 같은 순서, 같은 시각으로 넣었습니다.</li>
+        <li>정답을 미리 적어 두고 대조했습니다.</li>
+        <li>결과는 화면과 증거 파일로 남겨, 누구나 다시 확인할 수 있습니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>10 / 14</span></div>
+</div>
+
+<!-- S11 실패 케이스 상세 -->
+<div class="slide">
+  <div class="tag">5. 검증 — 주요 실패 케이스와 개선 방식</div>
+  <h2>우리가 직접 찾아낸 실패 세 가지. 증상부터 재발 방지까지</h2>
+  <table style="margin-bottom:2mm">
+    <tr>
+      <th style="width:10%"></th>
+      <th style="width:30%">사례 1. 두 번째 약 도착이 사라졌다</th>
+      <th style="width:30%">사례 2. 다시 등록한 약이 막혔다</th>
+      <th style="width:30%">사례 3. 진행 중인 일을 끝났다고 답했다</th>
+    </tr>
+    <tr>
+      <th>증상</th>
+      <td>약을 두 번째로 받으면, 도착이 잔량에 반영되지 않음</td>
+      <td>약을 지웠다가 다시 등록하면, 그 약의 새 도착이 영영 반영되지 않음</td>
+      <td>결과가 오기 전에 같은 요청이 겹치면 끝났다고 답함. 같은 화면의 장부에는 진행 중이라고 적혀 있음</td>
+    </tr>
+    <tr>
+      <th>원인</th>
+      <td>도착 기록의 이름이 매번 같았음. 같은 이름을 보고 이미 처리한 도착으로 오인</td>
+      <td>지운 약은 되살아나면 안 된다는 방어가 너무 넓었음. 몰래 되살아나는 것과 사용자의 재등록을 구분하지 않음</td>
+      <td>겹친 요청에 새 일을 만들지 않는 것까지는 맞았지만, 답하는 말을 장부 상태와 맞추지 않음</td>
+    </tr>
+    <tr>
+      <th>어떻게<br>찾았나</th>
+      <td>여러 달 쓰는 상황을 머릿속이 아니라 <b>실행으로</b> 흉내 냄. 두 번 받는 흐름을 넣자마자 드러남</td>
+      <td><b>출제자의 눈으로</b> 우리 규칙을 일부러 무너뜨리는 순서를 만들어 코드를 한 단계씩 따라감. 삭제, 재등록, 새 도착 순서에서 걸림</td>
+      <td>앞선 점검을 전혀 모르는 <b>새로운 눈으로</b> 코드 전체를 처음부터 다시 읽다가, 말과 장부가 어긋나는 지점을 발견</td>
+    </tr>
+    <tr>
+      <th>고침</th>
+      <td>도착 기록 이름에 <b>회차를 넣어 매번 다르게</b> 만듦</td>
+      <td>방어가 불필요함을 <b>증명하고 없앰</b>. 지울 때 대기 중인 도착을 전부 취소하므로, 지운 뒤 남는 도착은 모두 재등록 뒤의 정당한 것</td>
+      <td>장부에 적힌 그대로 답하게 함. <b>진행 중, 완료, 취소</b> 세 갈래로</td>
+    </tr>
+    <tr>
+      <th>재발<br>방지</th>
+      <td>두 번 받는 상황을 자동 테스트로 고정. 비공개 시나리오 실행 팩에도 넣어 공식 도구로 재확인</td>
+      <td>삭제, 재등록, 도착까지 이어지는 흐름을 자동 테스트로 고정. 경계도 문서에 적음</td>
+      <td>세 갈래 답을 각각 자동 테스트로 고정</td>
+    </tr>
+  </table>
+  <p class="dim">세 실패의 공통점이 있습니다. 처음 며칠은 멀쩡하고, <b>오래 쓰거나 상황이 겹쳐야 드러난다</b>는 점입니다.
+  긴 시간을 견디는 앱이라는 이 대회의 주제와 정확히 같은 지점이라, 저희는 이 셋을 가장 값진 발견으로 꼽습니다.</p>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>11 / 14</span></div>
+</div>
+
+<!-- S12 개선 방식 -->
+<div class="slide">
+  <div class="tag">5. 검증 — 개선 방식</div>
+  <h2>실패를 다루는 네 가지 규칙</h2>
+  <div class="row" style="margin-bottom:4.5mm">
+    <div class="col card">
+      <h3>① 의심부터 시작합니다</h3>
+      <p>스스로 여섯 번 점검했습니다. 라운드마다 <b>다른 눈</b>을 썼습니다.
+      처음 읽는 눈, 출제자의 눈, 고친 곳만 다시 보는 눈. 같은 눈으로 두 번 보면 같은 것만 보이기 때문입니다.</p>
+    </div>
+    <div class="col card">
+      <h3>② 확정 전에는 고치지 않습니다</h3>
+      <p>보고된 문제마다 코드에서 <b>재확인해 진짜만</b> 고쳤습니다.
+      과장된 발견과 억지 발견은 근거를 적고 버렸습니다.</p>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom:4.5mm">
+    <div class="col card">
+      <h3>③ 고치면 전부 다시 검사합니다</h3>
+      <p>한 줄을 고쳐도 자동 테스트 43개, 공식 검증 도구 완주, 화면 검사 35개를 <b>전부 다시</b> 돌렸습니다.
+      예외는 한 번도 없었습니다. 고친 곳이 새 문제를 만드는 것까지 잡기 위해서입니다.</p>
+    </div>
+    <div class="col card">
+      <h3>④ 일부러 남긴 것은 밝힙니다</h3>
+      <p>작은 화면 지연처럼 <b>고치는 위험이 더 큰 것은 남기고, 문서에 적었습니다.</b>
+      멈출 곳을 아는 것도 개선 방식이라고 생각합니다.</p>
+    </div>
+  </div>
+  <div class="card accent" style="text-align:center">
+    <p><b>여섯 라운드 동안 찾은 문제 수는 33, 16, 46, 21, 21, 그리고 마지막에 7건. 마지막 7건은 전부 가벼워서 고칠 것이 없었습니다.</b><br>
+    문제가 더 나오지 않을 때까지 반복했고, 그 수렴을 확인한 뒤에 제출했습니다.</p>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>12 / 14</span></div>
+</div>
+
+<!-- S13 차별점·한계·향후 -->
+<div class="slide">
+  <div class="tag">6. 차별점 및 한계</div>
+  <h2>차별점, 한계, 그리고 다음 단계</h2>
+  <div class="row">
+    <div class="col card accent">
+      <h3>차별점</h3>
+      <ul>
+        <li><b>효과를 실험으로 증명합니다.</b> 안전장치만 끈 자신과 나란히 비교하고, 미리 적어 둔 정답과 대조합니다.</li>
+        <li><b>약 단위로 정확히 고칩니다.</b> 변경과 중단이 그 약의 기억만 건드립니다. 몽땅 초기화하지 않습니다.</li>
+        <li><b>화면과 검증이 한 길입니다.</b> 지문까지 같음을 실측으로 확인했습니다.</li>
+        <li>끝났다고 꾸미지 않습니다. 대기와 보류, 진행 중을 그대로 보여줍니다.</li>
+      </ul>
+    </div>
+    <div class="col card">
+      <h3>지금의 한계</h3>
+      <ul>
+        <li>대상이 어르신인 만큼, <b>버튼을 눌러 처방을 입력하는 일 자체가 어려울 수 있습니다.</b> 지금은 등록을 손으로 직접 해야 합니다.</li>
+        <li>약 두 종류, 아침저녁 두 칸으로 단순하게 만들었습니다. 여러 약과 복잡한 일정은 아직입니다.</li>
+        <li>권한을 끈 직후 화면 일부가 한 번 늦게 갱신되는 작은 지연이 있습니다. 문서에 밝혀 두었습니다.</li>
+      </ul>
+    </div>
+    <div class="col card">
+      <h3>다음 단계</h3>
+      <p style="margin-bottom:2mm"><b>① 처방전을 사진이나 QR로 찍어 등록.</b>
+      찍은 처방전에서 글자를 읽어 무슨 약인지 알아내고 바로 등록해 주면,
+      버튼 입력이 어려운 어르신도 <b>사진 한 장으로 시작</b>할 수 있습니다.
+      왼쪽의 첫 번째 한계를 정면으로 푸는 단계입니다.</p>
+      <p style="margin-bottom:1.2mm"><b>② 시연 버튼을 실제 입력으로.</b></p>
+      <table>
+        <tr><td>사흘 뒤 버튼</td><td>실제 시간, 약국 알림</td></tr>
+        <tr><td>인터넷 전환 버튼</td><td>실제 연결 상태</td></tr>
+        <tr><td>처방 변경 버튼</td><td>새 처방전 입력</td></tr>
+      </table>
+      <p style="margin-top:2mm; font-size:9.6pt">구조는 이미 이 교체를 전제로 설계했습니다. 이후 여러 약 확장과 보호자 공유를 계획하고 있습니다.</p>
+    </div>
+  </div>
+  <div class="foot"><span>SCPC 2026 본선 — 약지기 · SDH</span><span>13 / 14</span></div>
+</div>
+
+<!-- S14 마무리 -->
+<div class="slide cover">
+  <div class="kicker">정리</div>
+  <h1 style="font-size:26pt">기억이 많아지는 것이 아니라,<br>맞는 기억만 남는 것이 진화입니다</h1>
+  <div class="slogan" style="margin-top:4mm">약지기는 매일의 약 확인을 대신 기억하고, 낡은 기억은 쓰지 않으며,<br>
+  변화가 오면 그 부분만 고쳐서 내일의 확인을 이어갑니다.</div>
+  <div class="meta2">감사합니다 · Q&amp;A</div>
+  <div class="medban">이 발표의 모든 인물과 데이터는 가상이며, 앱은 의료 조언이나 진단, 복약 지시가 아닙니다.</div>
+</div>
+
+</body>
+</html>

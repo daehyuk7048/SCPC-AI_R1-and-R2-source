@@ -1,0 +1,55 @@
+{
+  "verdict": "NEEDS_FIX",
+  "issues": [
+    {
+      "severity": "high",
+      "claim": "가이드 §2 필수항목 누락 — 'T+48 선언과 일치하는 대상 사용자·장기 목표·Primary value' 중 '장기 목표'가 문서에 식별 가능한 형태로 없다. §1은 대상 사용자·문제, 반복되는 사용자 결과(성공상태), Primary value만 담고 있으며, 선언의 '장기 목표 (여러 session 뒤 확인)' ①~⑥(불필요 입력 감소, 잘못된 재사용 목표치 0건·감지 후 최소 범위 복구, 질문/대기/보류/재계획/중단 선택, 성분 단위 복구, 지연 도착 반영, restart reconcile — '진화하는 복용 체크리스트')을 승계하는 명시 절이 없다. 내용 일부가 §2·§3·§6·§7에 흩어져 있어도 체크리스트 대조 심사에서 누락으로 판정될 수 있다.",
+      "fix": "§1에 '장기 목표(여러 session 뒤 확인)' 소절을 추가하고 선언 ①~⑥을 동일 용어로 재기술한다(특히 '목표치 0건, 발생 시 원장에 감지·기록 후 최소 범위 복구'와 '진화하는 복용 체크리스트' 문면 승계)."
+    },
+    {
+      "severity": "high",
+      "claim": "§3.2 '단일 함수 isValid(권위·기한·scope·소모 판정)가 세 지점에서 공유된다'는 소스로 반증된다. ChebiCore.kt에서 isValid(L412)는 재사용 게이트(decide, L470)와 validMemories(L213)에서만 호출되고, 충돌 게이트(correctFromRoles L579-581의 권위 비교, revokeScope L722의 scope 비교)와 복구 게이트(invalidateDescendants)는 같은 '기준'을 별도 코드로 구현한다. 코드 주석 자체가 '재사용 게이트(isValid)의 권위 판정과 같은 기준'(L577-578)이라고 쓰며 함수 공유가 아님을 인정한다. 동결 선언의 문면은 '하나의 유효성 판정을 공유'(함수가 아니라 판정)이므로 문서가 선언보다 강한, 검증 시 깨지는 주장을 하고 있다.",
+      "fix": "선언 문면대로 '재사용·충돌·복구 세 지점이 하나의 유효성 판정(권위·기한·scope·소모 기준)을 공유한다'로 되돌리고, 함수 수준 사실은 '재사용 게이트와 UI 체크리스트 조립이 같은 isValid를 직접 호출하며(ChebiCore.validMemories), 충돌·복구 게이트는 동일 기준을 대칭 적용한다'로 정확히 기술한다. (또는 세 지점이 실제로 isValid를 호출하도록 리팩터링 후 현재 문장을 유지.)"
+    },
+    {
+      "severity": "high",
+      "claim": "§8.1 ③ '재허용 시 scope는 철회 목록에서 제거되지만'은 사실과 다르다. OS 권한 재허용 시점에는 어떤 이벤트도 발행되지 않고(MainActivity.syncNotifyPermission의 재허용 분기는 안내 문구만 표시, L193-195), revoked_scopes에서 scope_notify가 제거되는 것은 [복용 알림 예약] 재등록이 SCOPE_GRANTED를 실은 UPSERT를 발행할 때뿐이다(ChebiCore L315-323 'GRANT 계열 키만 철회 목록에서 제거'). 심사자가 재허용 직후 [증거 내보내기]를 하면 evidence/state/invalidation.json에 scope_notify가 남아 있어 문서와 모순된다. MISSION_ADAPTER.json의 UPSERT_FACT 서술('scope 재부여는 철회 목록에서 해당 scope 제거')이 정확한 버전이다.",
+      "fix": "'재허용만으로는 철회 기록이 바뀌지 않으며, 화면 안내에 따라 [복용 알림 예약]을 명시적으로 재등록하는 scope 재부여 학습이 철회 목록에서 그 scope를 제거하고 새 기억을 만든다'로 수정 — 뒤 문장(자동 부활 없음·명시적 재등록 복귀)과도 자연스럽게 이어진다."
+    },
+    {
+      "severity": "medium",
+      "claim": "§6 ② '[리필 draft 승인]만이 대기열 등록의 트리거이며(미승인 draft는 등록 자체가 없어 영원히 도착하지 않는다)'는 원장 관찰로 반증된다. draft 생성 자체가 REQUEST_DECISION이므로 actionFor(ChebiCore L533-539)가 일반 지연 결과(outcome-EV-…)를 pending_outcomes에 등록하고, 시간 경과 시 도착해 outcome_ledger 행·도착 기억·COMMITTED 승격이 생긴다. 승인만이 등록하는 것은 '리필 outcome'(outcome-decl-refill_*)이고 잔량 +30 가산도 그 도착 기억에만 반응한다(MedDomain.applyArrivedRefills). MISSION_ADAPTER.json의 DELAYED_OUTCOME 문구는 이 구분을 정확히 담고 있어 문서 간 불일치이기도 하다.",
+      "fix": "MISSION_ADAPTER.json 문구로 정렬: '[리필 draft 승인]만이 리필 도착 대기(outcome-decl 경로)의 등록 트리거이며, 잔량 가산은 그 리필 도착 기억에만 반응한다 — 결정 자체가 남기는 일반 지연 결과(원장 기록·commit 경계)와 구분된다.'"
+    },
+    {
+      "severity": "medium",
+      "claim": "Mission명 표기가 동결 선언 문면('약지기 - 진화형 복약 관리')과 불일치: 문서 제목은 '약지기(진화형 복약 관리)', 승계 인용부는 '「약지기 — 진화형 복약 관리」'(em-dash)로 세 표기가 제각각이다. 검토 기준에 명시된 항목이며, 동결 선언 승계를 주장하는 문서가 Mission명부터 문면이 다르면 정합성 공격 지점이 된다.",
+      "fix": "최소한 승계를 선언하는 첫 문단의 인용은 동결 문면 그대로 '약지기 - 진화형 복약 관리'로 표기하고, 제목도 가급적 동일 문면으로 통일한다."
+    },
+    {
+      "severity": "medium",
+      "claim": "'프리필' 지표의 내부 충돌 위험: §3.3은 선언 지표 '세션당 입력·재확인 단계 수'가 s3_prefill/s7_prefill_final과 1:1 대응이라 하는데, 코드에서 이 필드는 selected_context_ids 크기다(MedComparisonLab L656, L665: selected(s3).size). 그런데 §6은 '프리필 지표는 selected_context_ids 개수가 아니다'라고 강조한다. 같은 단어 '프리필'이 비교 리포트(=selected 크기)와 UI 지표(=체크리스트 행+도착 수)에서 다른 정의로 쓰여, '유효성 지표가 화면용/시험용으로 이원화됐다'는 §3.2 취지에 반하는 공격 지점이 된다.",
+      "fix": "§3.3에 한 문장 추가: '비교 리포트의 s3_prefill/s7_prefill_final은 결정 게이트의 selected context 크기(격리 arm 관찰값)이고, §6의 세션 프리필 수는 evidence/ui/metrics.json의 화면 단위 관찰값으로 정의가 서로 다르며 각각의 자리에서 집계된다'고 구분을 명기(또는 비교 리포트 필드명을 s3_selected 등으로 개칭)."
+    },
+    {
+      "severity": "medium",
+      "claim": "§4 '비교 리포트는 ground truth(정정의 실제 영향 집합·보존 대상 집합)…를 함께 담아'는 절반만 사실이다. comparison_run.json의 ground_truth에는 S6_correct_impact(영향 집합)만 들어가고(MedComparisonLab L571-578), 보존 대상 집합 GT_KEEP_S6는 s6_preservation_rate 계산에만 쓰이며 리포트에 미포함이다.",
+      "fix": "리포트 ground_truth에 S6_keep_targets(GT_KEEP_S6)를 추가하거나, 문구를 '정정의 실제 영향 집합을 데이터로 명기하고, 보존 대상 집합은 복구 보존율 산식의 기준으로 내장한다'로 조정한다."
+    },
+    {
+      "severity": "medium",
+      "claim": "가이드 §2 '공개 연습도구·앱 public UI와 Dacon OPS가 live 검증 입력을 실행하고 Judge가 evidence를 찾는 정확한 path' 중 '공개 연습도구(Kit의 공식 Runner)'의 실행 경로 서술이 §10에 없다. §10은 앱 내 공개 점검 UI와 Judge evidence 경로만 다루고, 공식 Runner는 §11에서 호출 수 기록 주체로만 스치듯 언급된다.",
+      "fix": "§10에 한 줄 추가: '공개 연습은 Kit의 공식 Runner APK가, live 검증은 Dacon OPS가 각각 protected component를 통해 같은 candidate adapter(ChebiProbeAdapter.executeStep)를 호출하며, step 증거 실파일은 앱 외부 파일 폴더의 probe_evidence/에 결과 신고 ID와 1:1 파일명으로 기록된다.'"
+    },
+    {
+      "severity": "low",
+      "claim": "§2·§4의 '8단계 이벤트 열'은 이벤트 수로 세면 10건이다(MedComparisonLab.runArm: S0 RESET + S1·S2 각 2회 UPSERT + S3~S7 = core.execute 10회). 화면 문구('같은 8단계 이벤트 열')와는 일치하므로 내부 정합은 있으나, step 수를 세는 심사자에게 반증 여지를 준다.",
+      "fix": "'S0(RESET)~S7의 8단계(이벤트 10건: 학습 2약×2건 포함)'처럼 단계와 이벤트 수를 구분해 표기한다."
+    },
+    {
+      "severity": "low",
+      "claim": "의료·안전 고지의 '이 고지는 앱 첫 화면 상단에도 고정 표기된다'에서 '고정'이 과장으로 읽힐 수 있다. 고지는 ScrollView 최상단의 일반 TextView라(MainActivity L97) 스크롤하면 화면에서 사라진다 — sticky 고정이 아니다.",
+      "fix": "'앱 첫 화면 최상단에 표기된다'로 완화하거나, 실제로 스크롤과 무관하게 고정(pinned) 배치로 구현을 맞춘다."
+    }
+  ]
+}

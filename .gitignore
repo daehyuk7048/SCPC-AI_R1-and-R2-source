@@ -1,0 +1,35 @@
+# ===== 대회 자료 (데이콘 배포본 — 재배포 금지) =====
+data/data/
+data/2차/SCPC2026_R2_CANDIDATE_RELEASE_v3/
+R2/sample_app/
+R2/tools/
+**/scpc-probe-starter-*.aar
+
+# ===== 대회 데이터 파생물 (task id·답안·공식 Runner 결과) =====
+data/submission*.csv
+data/stale_variants/*.csv
+data/public25위_SDH_코드제출.zip
+R2/practice/
+R2/practice_chebi/RUN_*/
+R2/practice_chebi/EVIDENCE_*/
+R2/practice_chebi/PUBLIC_RUN/
+R2/practice_chebi/SAMPLE_EXPORT/
+R2/SUBMISSION_FINAL/SAMPLE_EXPORT/
+
+# ===== 비밀·개인 =====
+R2/keystore/
+장학금_SCPC2026_활동정리.md
+
+# ===== 빌드 산출물·대용량 =====
+*.apk
+.gradle/
+.kotlin/
+build/
+__pycache__/
+*.pyc
+*.bak_pre_v14
+*.mp4
+R2/mission$2
+
+# 제출 패키지 zip (내용은 R2/chebi 와 동일, kit .aar 포함)
+SOURCE.zip

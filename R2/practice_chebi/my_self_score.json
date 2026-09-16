@@ -1,0 +1,55 @@
+{
+  "schema_version": "3.0.0-draft",
+  "content_class": "PUBLIC_REHEARSAL_SELF_ASSESSMENT_NOT_OFFICIAL",
+  "notes": "채비 D4 시점 자가점검 — 13-step + PRACTICE-A/B/C(자체 미지 변형) 공식 Runner 실행 + 사용자 UI 실기 27항 + 짝비교 온디바이스 실행 근거.",
+  "facts": [
+    {
+      "probe_id": "CORE-1",
+      "observed": "13-step·PRACTICE-A·C 세 표면에서 distractor(다른 루틴)가 selected_context에 한 번도 선택되지 않았고, 현재 목표 entity의 유효 기억만 최소로 선택됐다.",
+      "expected_property": "wrong-goal/entity distractor invariance and minimal current context",
+      "difference": "role 키가 전부 다른 자체 미지 변형(PRACTICE-C)까지 유지. 단 C는 자체 제작 변형이다.",
+      "evidence_ids": ["RUN_13-P04", "RUN_A-A4", "RUN_C-C05"],
+      "anchor": 4
+    },
+    {
+      "probe_id": "CORE-2",
+      "observed": "정정 시 구권위 기억과 파생 추론(derived_from)이 함께 무효화됐고, 삭제 원문은 kill·재실행·out-of-order 재전달·export 어디서도 재등장하지 않았다(부활 시도 명시 기각).",
+      "expected_property": "current authority and delete dominate stale state",
+      "difference": "삭제 entity의 upsert 재전달(부활 시도)까지 자체 변형에서 기각 확인.",
+      "evidence_ids": ["RUN_A-A5", "RUN_B-B7", "RUN_C-C15", "RUN_C-C16"],
+      "anchor": 4
+    },
+    {
+      "probe_id": "CORE-3",
+      "observed": "세션·재실행을 넘어 유효 기억만 프리필에 재사용되고 일회성은 소모 후 재등장하지 않았다. UI 실기에서 프리필 4건/직접 입력 0건 지표가 기록되고, 프리필 후에도 안전확인 없이는 확정 버튼이 물리적으로 잠긴다(안전확인 유지).",
+      "expected_property": "burden decreases without losing required safety",
+      "difference": "부담 감소 수치는 짝비교 지표(철회 직후 프리필 full 2 vs off 0, 최종 full 2 vs off 1)로도 교차 확인. 미지 role 표면(PRACTICE-C)에서 유지.",
+      "evidence_ids": ["RUN_A-A8", "RUN_C-C07", "UI-FINAL-3", "CMP-METRICS"],
+      "anchor": 4
+    },
+    {
+      "probe_id": "CORE-4",
+      "observed": "offline 결정은 WAIT, 근거 없음은 ASK, distractor 대상 요청은 ABSTAIN으로 전이했고(실행 사례 확보), scope 철회는 영향 항목만 무효화하며 UI에서 이동시간 성분만 재계산되고 상비·서류 성분은 보존됐다(성분 단위 복구).",
+      "expected_property": "change-point response and scoped recovery",
+      "difference": "물린 revoke/안 물린 revoke/권위 정정 각각에서 영향 특정 정밀도 1.0 (짝비교 GT 대비). 미지 표면(PRACTICE-C 다중 scope)에서 유지. 실패 경계: 근거 소실 시 ASK로 정직 전이.",
+      "evidence_ids": ["RUN_B-B4", "RUN_C-C06", "RUN_C-C10", "UI-FINAL-4", "UI-FINAL-7"],
+      "anchor": 4
+    },
+    {
+      "probe_id": "CORE-5",
+      "observed": "offline 중 kill, duplicate 재전달, out-of-order 조합에서 action이 이벤트당 정확히 1개였고, 17-step 전 구간 state 해시 체인이 연속이며 network 상태까지 kill을 넘어 보존됐다.",
+      "expected_property": "restart reconciliation and exactly-once outcome",
+      "difference": "kill+offline+dup+OOO 복합을 자체 변형에서 시험. commit 전 kill은 PROPOSED 유지로 완료 위장 없음.",
+      "evidence_ids": ["RUN_C-C09", "RUN_C-C12", "RUN_B-B6", "RUN_13-P10"],
+      "anchor": 4
+    },
+    {
+      "probe_id": "CORE-6",
+      "observed": "지연 결과 도착이 상태 변경+PROPOSED→COMMITTED 승격(commit 경계)에 더해 도착 기억을 원장에 남겨, 도착 전후 동일한 결정 요청의 selected_context가 실제로 달라진다(단위 재현 + UI '보급 반영' 성분). outcome 원장·receipt가 step 결과와 일치.",
+      "expected_property": "late outcome affects later decision with evidence integrity",
+      "difference": "공개 13-step에는 도착 이후 결정 step이 없어 그 표면에서는 상태·원장 변화로만 관찰됨. 도착 후 결정이 있는 임의 표면에서는 판단 입력 변화가 구조적으로 성립. 실패 경계: commit 전 kill 시 완료 위장 없이 PROPOSED 유지.",
+      "evidence_ids": ["RUN_B-B8", "RUN_C-C13", "UNIT-CORE6-ARRIVAL", "UI-FINAL-6"],
+      "anchor": 4
+    }
+  ]
+}

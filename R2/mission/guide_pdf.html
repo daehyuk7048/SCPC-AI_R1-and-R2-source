@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>INSTALL_AND_USE_GUIDE_SDH</title>
+<style>
+  @page { size: A4; margin: 12mm 14mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Malgun Gothic", "맑은 고딕", sans-serif; font-size: 9.4pt; line-height: 1.42; color: #111; }
+  h1 { font-size: 13pt; margin-bottom: 2mm; padding-bottom: 1.6mm; border-bottom: 1.4px solid #333; }
+  h2 { font-size: 11pt; margin: 4mm 0 1.4mm 0; padding-left: 1.8mm; border-left: 3px solid #333; }
+  h3 { font-size: 10pt; margin: 2.6mm 0 1mm 0; }
+  p { text-align: justify; word-break: keep-all; margin: 1mm 0; }
+  ul, ol { margin: 1mm 0 1mm 5mm; }
+  li { margin: 0.5mm 0; text-align: justify; word-break: keep-all; }
+  table { border-collapse: collapse; margin: 1.6mm 0; width: 100%; }
+  th, td { border: 0.6px solid #666; padding: 1mm 1.6mm; font-size: 8.8pt; text-align: left; word-break: keep-all; }
+  th { background: #eee; }
+  code { font-family: Consolas, monospace; font-size: 8.6pt; background: #f2f2f2; padding: 0 1px; }
+  pre { background: #f2f2f2; padding: 1.6mm; margin: 1.2mm 0; font-size: 8.4pt; overflow-x: hidden; white-space: pre-wrap; }
+  hr { border: none; border-top: 0.8px solid #999; margin: 2.6mm 0; }
+  b, strong { font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>약지기 — 설치 및 사용 안내서 (INSTALL_AND_USE_GUIDE)</h1>
+<p><strong>SCPC 2026 예선 2차 · 참가자(데이콘 닉네임): SDH · Mission: 약지기 - 진화형 복약 관리</strong></p>
+<p>이 문서는 본 앱을 처음 보는 운영자·심사자가 참가자의 도움 없이 설치 → 초기화 → E1~E4 여정 → 예외·복구 관찰 → 짝비교 → 공개 점검(Probe rehearsal) → 증거 내보내기를 단독 수행할 수 있도록 작성되었습니다. 본문에 나오는 따옴표 안 문구는 화면의 실제 버튼·표시 문구와 글자 단위로 같습니다.</p>
+<blockquote>
+<p><strong>의료 관련 고지(필독).</strong> 이 앱은 의료 조언·진단·복약 지시가 아닙니다. 용량·복용 여부를 앱이 스스로 정하지 않으며, 기록된 의사 지시의 최신 버전·기한·중단 scope를 기억·대조해 화면에 표시할 뿐입니다. 복용은 항상 사용자의 최종확인으로만 확정됩니다. 등장하는 인물(합성 노인 페르소나 "대혁", 71세)·처방·조제·배송·복용 기록·메모는 전부 앱 내부의 완전 합성 데이터와 가상시간이며, 실존 인물·실제 환자 데이터·실제 의료기관·약국·계정·결제와 무관합니다. 첫 화면 최상단에도 같은 고지가 상시 표시됩니다.</p>
+</blockquote>
+<h2>1. 설치</h2>
+<h3>1.1 요구 사항</h3>
+<ul>
+<li>평가 대상 APK: <code>APP.apk</code> (패키지명 <code>com.sdh.chebi</code>, 서명된 release 빌드)</li>
+<li>공식 확인 환경: <strong>Android 15 (API 35), arm64-v8a</strong>. 본 APK는 네이티브 코드를 포함하지 않아(abiFilters·NDK 미사용, 순수 Kotlin) arm64-v8a는 물론 <strong>x86_64 시스템 이미지(API 35)에도 설치·동작</strong>합니다 — Windows/Intel PC의 에뮬레이터로도 전체 절차를 단독 수행할 수 있습니다. 참고로 minSdk는 28입니다.</li>
+<li>PC에 Android SDK <strong>platform-tools</strong>(<code>adb</code>)가 설치되어 있고 <code>adb</code>가 PATH에 있으면 됩니다. 그 외 계정·API key·유료 구독·네트워크 백엔드는 일절 필요하지 않습니다(앱은 온전히 로컬·합성으로 동작).</li>
+</ul>
+<h3>1.2 에뮬레이터 설치 (권장)</h3>
+<ol>
+<li>Android Studio &gt; Device Manager에서 <strong>Android 15 (API 35)</strong> 시스템 이미지로 AVD를 만들어 부팅합니다. 공식 확인 환경과 같은 arm64-v8a 이미지를 권장하지만, Windows/Intel PC에서는 x86_64 이미지를 쓰셔도 됩니다(APK에 네이티브 코드가 없어 그대로 설치·동작합니다).</li>
+<li>터미널에서:</li>
+</ol>
+<pre><code>adb devices                 # 에뮬레이터가 device 상태로 보이는지 확인
+adb install -r APP.apk
+adb shell am start -n com.sdh.chebi/.MainActivity
+</code></pre>
+<h3>1.3 실기기 설치</h3>
+<ol>
+<li>기기에서 개발자 옵션 &gt; <strong>USB 디버깅</strong>을 켜고 PC에 연결, 기기 화면의 디버깅 허용 대화상자를 승인합니다.</li>
+<li>위와 동일하게 <code>adb devices</code> → <code>adb install -r APP.apk</code> → 앱 서랍에서 <strong>약지기</strong> 아이콘 실행(또는 위 <code>am start</code> 명령).</li>
+</ol>
+<p>설치 직후 앱은 별도 로그인·설정 없이 바로 첫 화면이 열립니다. 참고: 7장·9장의 파일 반입·회수(<code>adb push/pull</code>)는 일부 실기기에서 OS의 <code>Android/data</code> 접근 제한으로 거부될 수 있으므로, 파일 기반 절차까지 포함한 전체 점검에는 <strong>에뮬레이터 사용을 권장</strong>합니다.</p>
+<h2>2. 첫 화면 구성 (위에서 아래 순서)</h2>
+<p>한 개의 세로 스크롤 화면에 모든 기능이 있습니다.</p>
+<ol>
+<li><strong>제목·고지</strong> — "약지기 — 대혁의 복약 관리"와 의료 고지문.</li>
+<li><strong>상태줄</strong> — <code>세션 SESSION-UI-n (아침/저녁) · 가상시각 … · 네트워크 ONLINE/OFFLINE · epoch n · 판단 n회</code>. 가상시계 기준으로 아침/저녁 복용 슬롯이 정해지고, epoch는 프로세스 재실행 경계를 셉니다.</li>
+<li><strong>최근 이벤트 강조 패널</strong>(노란 배경) — 초기값 "최근 이벤트: (없음)". <strong>여정·상황 변화·짝비교·증거 버튼의 결과는 이 패널과 토스트에 동시에 <code>▶ 버튼이름: 결과</code> 형식으로 표시</strong>되어, 방금 어느 기능이 실행되어 어떤 결과가 났는지 스크롤 위치와 무관하게 즉시 확인됩니다. 예: <code>▶ 복용 기록: 복용 기록 완료 (1건 기록)</code>. 두 가지 예외가 있습니다: <strong>공개 점검 3개 버튼</strong>의 결과는 이 패널이 아니라 화면 하단 공개 점검 상태줄(과 토스트)에 표시되고, <strong>"알림 권한 요청 (OS 실제 권한)"</strong>은 OS 권한 대화상자만 띄우므로 ▶ 메시지를 만들지 않습니다(권한 회수·재허용 시의 자동 안내도 ▶ 없이 이 패널에 직접 표시됩니다 — 5장).</li>
+<li><strong>오늘의 복용 세션 (E2 재사용)</strong> — 오늘 슬롯의 체크리스트(약별 처방·잔량·비고), 버튼 "복용 세션 시작 — 유효한 처방만 프리필", 체크박스 "복용 전 최종확인: 약·수량을 직접 확인했습니다 (프리필로 건너뛰지 않음)", 버튼 "복용 기록", 지표줄(<code>누적 세션 n회 · 최근: 프리필 n건 / 직접 확인 n건 / 최종확인 유지</code>). "복용 기록" 버튼은 세션 시작 전에는 "복용 기록 (세션을 먼저 시작하세요)", 최종확인 전에는 "복용 기록 (최종확인 필요)"로 잠겨 있습니다 — 최종확인 없이 복용이 기록되는 경로가 없습니다.</li>
+<li><strong>학습 (E1 — 사실·추론·기한형 구분)</strong> — "혈압약 처방 등록 (지시 v1 · 잔량 6 · 임계 5) — 상시", "항생제 등록 (7일 기한 · 잔량 14 · 임계 2) — 기한형", "복용 알림 예약 (아침 8시) — 알림 경로", "알림 권한 요청 (OS 실제 권한)", "민감 진단 메모 기억 (합성)".</li>
+<li><strong>상황 변화 (E3 예외 → E4 복구)</strong> — "처방 정정 v2 (혈압약 지시 변경) — 이 약의 성분만 재계산", "항생제 복용 중단 — 그 약·미도착 리필만 무효화", "알림 scope 철회 — 알림 파생 성분만 무효화", "네트워크 온/오프 전환", "보류 결정 재전달 (연결 회복 후 1회 재시도)", "리필 draft 승인 (혈압약) — 승인만이 도착 대기 등록", "반나절 전진 — 다음 복용 슬롯", "3일 전진 — 리필 도착·기한 관찰", "새 세션 시작 (배우자 약은 별개 대상)", "배우자 약에 대한 결정 요청 (보류 시연)", "민감 메모 삭제 — 원문 제거, tombstone만", "전체 초기화 (Reset)".</li>
+<li><strong>기억 원장 (열람)</strong> — 기억마다 색 배지 [유효]/[소모]/[무효]/[만료]/[정지]와 유형(FACT/INFERENCE/EPHEMERAL)·대상 약·scope·지시 버전이 표시됩니다. 삭제된 기억은 맨 아래 "삭제 기록(tombstone, 원문 없음): …" 줄에 ID만 남습니다.</li>
+<li><strong>짝비교 실험실 (full vs claim-off)</strong> — 버튼 "비교 실행 — 같은 시작 상태·같은 이벤트 열"과 결과 표.</li>
+<li><strong>"증거 내보내기 (evidence/*)"</strong> 버튼.</li>
+<li><strong>공개 점검 (Probe rehearsal)</strong> — "공개 입력 가져오기", "공개 입력 실행", "결과 내보내기" 버튼과, 그 아래 <code>PROBE_INPUT.json 경로: …</code> 안내(이 기기에서 파일을 넣을 실제 절대경로가 표시됩니다).</li>
+</ol>
+<h2>3. 3분 핵심 여정 (E1 학습 → E2 재사용 → 리필 순환)</h2>
+<p>설치 직후 상태에서 아래 버튼을 순서대로 누릅니다. 각 단계의 결과는 최근 이벤트 패널·체크리스트·기억 원장에서 확인합니다.</p>
+<ol>
+<li><strong>"전체 초기화 (Reset)"</strong> — "전체 초기화 완료 — 새 원장에서 시작합니다." 가상시각이 첫 아침 세션으로 맞춰집니다.</li>
+<li><strong>"혈압약 처방 등록 (지시 v1 · 잔량 6 · 임계 5) — 상시"</strong> — 기억 원장에 [유효] 처방(지시 bp_v1)·잔량 기억이 생깁니다.</li>
+<li><strong>"복용 세션 시작 — 유효한 처방만 프리필"</strong> — <code>▶ 복용 세션 시작: 아침 세션 열림 — 프리필 1건, 최종확인 후 복용을 기록하세요.</code></li>
+<li><strong>최종확인 체크박스 체크</strong> — <code>▶ 최종확인: 기록되었습니다 — '복용 기록' 버튼이 열렸습니다.</code> (최종확인은 별도 이벤트로 원장에 기재됩니다.)</li>
+<li><strong>"복용 기록"</strong> — 잔량 6→<strong>5</strong>. 체크리스트에 적색으로 "(임계 5 이하 — 리필 필요)"가 표시됩니다.</li>
+<li><strong>같은 순서 반복</strong>: "복용 세션 시작" → 최종확인 체크 → "복용 기록" — 잔량 5→<strong>4</strong>(임계 미만). 패널에 <code>복용 기록 완료 (2건 기록, 잔량 임계 도달 → 리필 draft 1건 생성)</code>. 건수는 이번에 원장에 기록된 이벤트 수의 합산입니다(잔량 기록 1건 + 리필 draft 결정 1건).</li>
+<li><strong>"리필 draft 승인 (혈압약) — 승인만이 도착 대기 등록"</strong> — "리필 draft 승인 — 준비완료가 가상시간 경과 후 도착합니다." (draft가 없는데 누르면 승인되지 않고 안내만 나옵니다 — 승인만이 도착 대기를 등록합니다.)</li>
+<li><strong>"3일 전진 — 리필 도착·기한 관찰"</strong> — 상태줄 가상시각이 3일 뒤 아침으로 이동합니다.</li>
+<li><strong>"복용 세션 시작"</strong> — 체크리스트에 녹색 "지연 결과 반영: 도착 1건"이 표시되고 잔량이 <strong>4+30=34</strong>로 갱신됩니다. 앞 episode의 승인이 뒤 세션의 잔량 판단을 실제로 바꾸는 지점입니다.</li>
+</ol>
+<h2>4. 상황 변화 관찰 동선 (E3 예외 → E4 복구)</h2>
+<p>각 항목은 3장의 상태에서 독립적으로 수행할 수 있습니다.</p>
+<ul>
+<li><strong>처방 정정 v1→v2</strong>: "처방 정정 v2 (혈압약 지시 변경) — 이 약의 성분만 재계산"을 누르면, 기억 원장에서 혈압약의 구지시(v1) 기반 성분만 [무효]로 바뀌고 잔량·임계(지시와 무관한 사실)와 다른 약의 기억은 [유효]로 보존됩니다. 다음 "복용 세션 시작"의 체크리스트는 v2 지시로 재계산되어 프리필됩니다.</li>
+<li><strong>항생제 등록·중단</strong>: "항생제 등록 (7일 기한 · 잔량 14 · 임계 2) — 기한형"은 저녁 슬롯 약이므로 "반나절 전진 — 다음 복용 슬롯"으로 저녁 세션에서 체크리스트 등재를 확인합니다. "항생제 복용 중단 — 그 약·미도착 리필만 무효화"를 누르면 항생제만 목록에서 제외되고 비고가 "기록 없음 또는 중단·만료"로 바뀌며(중단은 항생제 scope 전체 — 처방·잔량 기억 — 를 무효화), 혈압약 성분은 그대로입니다. 참고로 중단 없이 7일 기한이 지나 <strong>만료</strong>된 경우에는 잔량 기억이 유효로 남으므로 비고가 "지시 없음(중단·만료) — 잔량 기록만 있음"으로 표시됩니다 — 두 문구로 중단과 만료를 구분해 관찰할 수 있습니다.</li>
+<li><strong>네트워크 오프라인</strong>: "네트워크 온/오프 전환" → 상태줄이 <code>네트워크 OFFLINE</code>. 이 상태에서 "복용 세션 시작"을 누르면 <code>오프라인 — 로컬 확인·복용 기록은 계속합니다. 전송이 필요한 결정만 보류되어 연결 회복 후 '재전달'로 1회 재시도됩니다.</code>가 표시되며, 최종확인·"복용 기록"은 평소대로 진행됩니다(로컬 판단은 오프라인에서도 지속). 다시 "네트워크 온/오프 전환"으로 ONLINE 복귀 후 "보류 결정 재전달 (연결 회복 후 1회 재시도)"를 누르면 보류분이 재전달되고, 한 번 더 누르면 "재전달할 보류 결정이 없습니다."가 나와 정확히 1회 재시도임을 확인할 수 있습니다.</li>
+<li><strong>민감 메모 삭제</strong>: "민감 진단 메모 기억 (합성)"으로 등록한 뒤 "민감 메모 삭제 — 원문 제거, tombstone만"을 누르면, 원장에서 원문이 사라지고 "삭제 기록(tombstone, 원문 없음)" 줄에 ID만 남습니다.</li>
+<li><strong>프로세스 강제 종료·재실행</strong>: <code>adb shell am force-stop com.sdh.chebi</code> 후 앱을 다시 실행하면 원장·체크리스트·가상시각·보류 결정이 그대로 복원되어 있고, 다음 행동(예: "복용 세션 시작") 시 상태줄 <code>epoch</code>가 1 증가합니다. 삭제했던 메모가 재실행 후에도 부활하지 않는지 원장에서 함께 확인하십시오.</li>
+</ul>
+<h2>5. 알림 권한 (Android 13+ 실제 OS runtime permission)</h2>
+<ul>
+<li><strong>요청</strong>: "알림 권한 요청 (OS 실제 권한)"을 누르면 OS 권한 대화상자가 뜹니다.</li>
+<li><strong>허용 시</strong>: 버튼이 "알림 권한: 허용됨 (OS)"로 바뀌어 비활성화되고, "복용 알림 예약 (아침 8시) — 알림 경로" 버튼이 활성화됩니다. (첫 허용에도 전이 안내 "알림 권한이 다시 허용되었습니다 — …"가 패널에 표시될 수 있습니다 — 권한 상태 전이를 같은 문구로 알리는 설계입니다.)</li>
+<li><strong>거부 시</strong>: 알림 예약 버튼은 비활성 상태로 남지만 <strong>그 외 전 기능(세션·기록·리필·비교·점검)은 화면 확인 모드로 정상 동작</strong>합니다.</li>
+<li><strong>중도 회수 시</strong>: 알림 예약을 등록한 뒤 OS 설정 &gt; 앱 &gt; 약지기 &gt; 알림을 끄고 앱으로 돌아오면, 별도 조작 없이 최근 이벤트 패널에 "알림 권한이 회수되어 알림 파생 성분을 무효화했습니다 — 재허용 후 알림 예약을 다시 등록하세요."가 표시되고, 원장에서 알림 파생 성분(예약·파생 추론)만 무효화됩니다(원장 목록의 [무효] 배지는 다음 조작 시 갱신됩니다 — 아무 버튼이나 한 번 누르면 반영). 다른 약의 기억은 보존됩니다.</li>
+<li><strong>재허용 시</strong>: 앱 복귀 시 "알림 권한이 다시 허용되었습니다 — 알림 예약을 다시 등록해 주세요."가 표시됩니다. 같은 무효화 판정을 합성 이벤트로 재현하는 "알림 scope 철회 — 알림 파생 성분만 무효화" 버튼도 있습니다(권한 대화상자 없이 관찰할 때 사용).</li>
+</ul>
+<h2>6. 짝비교 (full vs claim-off) 실행과 지표 읽기</h2>
+<p>"비교 실행 — 같은 시작 상태·같은 이벤트 열"을 누르면 동일 시작 snapshot을 <strong>격리된 별도 상태공간 두 개에 복제</strong>한 뒤, 같은 8단계 이벤트 열을 게이트 판정 활성(full)/비활성(claim-off) 두 갈래로 실행하고 결과를 아래 표로 표시합니다.</p>
+<pre><code>같은 시작 상태 + 같은 8단계 이벤트 열 (격리 저장공간):
+  만료 항생제 유령 재사용: full … vs off …
+  만료 후 판단: full … vs off …
+  정정 영향 특정 정밀도: full … vs off …
+  정정 후 프리필 수: full … vs off …
+  episode 완주: full … vs off …
+</code></pre>
+<p>각 행의 의미: <strong>만료 항생제 유령 재사용</strong> = 기한이 지난 항생제가 세션 프리필에 재등장했는지, <strong>만료 후 판단</strong> = 만료 시점 세션에서 내린 결정 상태, <strong>정정 영향 특정 정밀도</strong> = 처방 정정 시 무효화된 항목이 실제 영향 항목과 얼마나 일치하는지, <strong>정정 후 프리필 수</strong> = 정정 직후 세션의 프리필 규모, <strong>episode 완주</strong> = 두 갈래 모두 episode를 끝까지 수행했는지입니다. 두 갈래의 값이 나란히 표시되므로 차이를 직접 대조하시면 됩니다. 비교 결과는 다음 "증거 내보내기" 시 <code>evidence/comparison/comparison_run.json</code>으로도 저장됩니다.</p>
+<h2>7. 공개 점검 (Probe rehearsal)</h2>
+<p>공개 배포된 검증 입력을 앱의 공개 UI로 직접 실행하는 절차입니다. 이 경로는 공식 protected 경로와 같은 파서·같은 candidate adapter를 사용합니다. 세 버튼은 각각 accessibility content description <strong><code>SCPC_PROBE_IMPORT</code></strong>("공개 입력 가져오기") / <strong><code>SCPC_PROBE_RUN</code></strong>("공개 입력 실행") / <strong><code>SCPC_PROBE_EXPORT</code></strong>("결과 내보내기")로 노출됩니다 — Kit <code>08_PROBE_MODE_CONTRACT.md</code>가 정의하는 세 control로, 공식 Runner도 같은 컨트롤을 구동합니다(official run 절차 상세는 해당 Kit 문서 참조).</p>
+<ol>
+<li><strong>입력 파일 준비·배치</strong>: Kit(candidate_release_v3)의 공개 13-step 입력 <code>probe/PUBLIC_PROBE_INPUT_13_STEP.json</code>을 파일명 <code>PROBE_INPUT.json</code>으로 복사해 사용합니다(또는 <code>public_harness/make_local_integration_fixture.py</code>를 실행하면 <code>PUBLIC_RUN/PROBE_INPUT.json</code>이 생성됩니다). 이 파일을 화면 하단 "공개 점검" 절에 표시된 절대경로(앱 외부 저장소, 통상 <code>/storage/emulated/0/Android/data/com.sdh.chebi/files</code>)에 넣습니다. adb 사용 시:
+   <code>adb push PROBE_INPUT.json /sdcard/Android/data/com.sdh.chebi/files/PROBE_INPUT.json</code>
+   (일부 실기기는 OS의 <code>Android/data</code> 접근 제한으로 이 push가 거부될 수 있습니다 — 이 경우 에뮬레이터를 사용하십시오. 1.2 참조.)</li>
+<li><strong>"공개 입력 가져오기"</strong> — <code>가져오기 완료: 13개 step (pack PUBLIC-REHEARSAL-13-OPS-V1)</code>이 하단 상태줄에 표시됩니다. 파일이 없으면 필요한 경로가 오류 문구에 그대로 표시됩니다.</li>
+<li><strong>"공개 입력 실행"</strong> — <code>실행 완료: 13개 step, 증거 ID n개 — '결과 내보내기'로 PROBE_RESULT.json을 저장하세요.</code></li>
+<li><strong>"결과 내보내기"</strong> — 같은 외부 경로에 <code>PROBE_RESULT.json</code>이 저장되며 완료 문구에 절대경로가 표시됩니다. 회수: <code>adb pull /sdcard/Android/data/com.sdh.chebi/files/PROBE_RESULT.json</code></li>
+</ol>
+<blockquote>
+<p><strong>순서 주의(중요).</strong> 공개 점검과 3~6장의 여정 화면은 <strong>같은 저장공간(동일 원장)을 공유</strong>합니다. 공개 입력은 RESET 단계부터 시작하므로, <strong>"공개 입력 실행"을 누르는 순간 이전 여정 상태(등록한 처방·잔량·비교 기록 등)가 초기화됩니다.</strong> 자유롭게 탐색하실 때는 ① 여정 관찰과 "증거 내보내기 (evidence/*)"를 먼저 끝낸 뒤 공개 점검을 실행하시거나, ② 공개 점검 후 "전체 초기화 (Reset)"부터 여정을 다시 시작하시면 됩니다. 어느 순서든 기능은 정상 동작하며, 초기화는 두 화면이 한 원장을 공유한다는 설계의 자연스러운 결과입니다.</p>
+</blockquote>
+<h2>8. 전체 초기화 (Reset)</h2>
+<p>"전체 초기화 (Reset)"는 언제든 합성 시작상태로 되돌립니다: 원장을 새로 시작하고 가상시계·세션 지표·비교 기록·보류 결정을 비웁니다("전체 초기화 완료 — 새 원장에서 시작합니다."). OS 알림 권한은 OS 설정이므로 초기화 대상이 아닙니다. 어떤 관찰이든 재현이 필요하면 이 버튼에서 다시 시작하시면 됩니다.</p>
+<h2>9. 증거 내보내기와 확인 위치</h2>
+<p>"증거 내보내기 (evidence/*)"를 누르면 현재 원장 상태가 앱 내부 저장소와 외부 저장소(공개 점검과 같은 경로) 두 곳의 <code>evidence/</code> 아래에 JSON으로 기록됩니다: <code>state/current_goal.json</code>, <code>state/target_entity.json</code>, <code>state/context_selection.json</code>, <code>state/facts.json</code>, <code>state/authority.json</code>, <code>state/invalidation.json</code>, <code>state/recovery.json</code>, <code>state/tombstones.json</code>, <code>ledger/outcomes.json</code>, <code>ui/metrics.json</code>, (비교 실행 후) <code>comparison/comparison_run.json</code>. 회수 예:
+<code>adb pull /sdcard/Android/data/com.sdh.chebi/files/evidence</code>
+(실기기에서 이 pull이 <code>Android/data</code> 접근 제한으로 거부되면 에뮬레이터를 사용하십시오 — 1.2 참조.)</p>
+<p>화면에서 본 체크리스트·원장·지표와 이 파일들의 내용이 같은 상태의 두 표현이므로, 임의 시점에 내보내 대조하실 수 있습니다.</p>
+</body>
+</html>

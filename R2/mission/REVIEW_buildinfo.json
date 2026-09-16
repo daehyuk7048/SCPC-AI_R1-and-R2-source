@@ -1,0 +1,20 @@
+{
+  "verdict": "NEEDS_FIX",
+  "issues": [
+    {
+      "severity": "medium",
+      "claim": "§5가 \"같은 소스·같은 도구 버전·같은 keystore로 재빌드하면 APK의 SHA-256이 동일하다\"를 일반 사실로 단정(제목도 byte-reproducible build)하지만, 제시된 근거는 참가자 단일 환경(Windows)에서의 clean 재빌드 반복뿐이다. AGP는 환경 간 byte 동일성을 보장하지 않으며, 서명키가 EC 계열이거나 apksigner가 RSASSA-PSS를 택하는 키 크기면 같은 keystore 재서명도 해시가 달라진다. 심사자 재빌드에서 해시가 다르면 문서 주장이 그 자리에서 반증되어 검토 기준 ③(과장·검증 불가 주장)에 걸린다.",
+      "fix": "주장을 실측 범위로 한정: \"참가자 환경(§2 버전, Windows)에서 clean 후 재빌드 시 SHA-256 동일함을 반복 확인했다\"로 바꾸고, 환경·키 종류에 따라 달라질 수 있으므로 심사측 검증은 unsigned 산출물 비교 또는 apkanalyzer 내용 대조를 1차 수단으로 명시(이미 있는 문장을 예외 처리가 아닌 기본 검증 경로로 승격)."
+    },
+    {
+      "severity": "low",
+      "claim": "§5 해시 확인 명령이 app\\build\\outputs\\apk\\release\\app-release.apk를 고정 지칭하지만, 이 파일명은 keystore.properties가 존재해 서명된 경우에만 생긴다. §4의 안내대로 keystore 없이 빌드한 심사자는 app-release-unsigned.apk만 얻으므로 명령이 그대로는 실패한다(기준 ⑤ 심사자 단독 수행).",
+      "fix": "§5에 두 파일명을 병기: 서명 빌드는 app-release.apk, keystore 미구성 빌드는 app-release-unsigned.apk를 대상으로 Get-FileHash/sha256sum을 실행한다고 한 줄 추가."
+    },
+    {
+      "severity": "low",
+      "claim": "§2가 첫 빌드 네트워크 요건을 테스트 의존성 괄호(\"첫 빌드 시 google()/mavenCentral() 접근 필요\")에만 붙여 서술하나, 실제로는 Gradle 8.9 배포판(services.gradle.org — wrapper 동봉분은 런처 JAR뿐)과 AGP 8.7.3·Kotlin 2.0.21 플러그인(google()/mavenCentral()/gradlePluginPortal, settings.gradle.kts 실확인) 다운로드도 필요하다. \"wrapper 동봉(별도 설치 불필요)\"이 오프라인 빌드 가능으로 오독될 수 있다(기준 ⑤).",
+      "fix": "§2에 독립 문장으로 명시: 첫 빌드에는 인터넷 연결이 필요하며 Gradle 8.9 배포판·AGP/Kotlin 플러그인·테스트 의존성이 자동 다운로드된다(이후 오프라인 재빌드 가능)."
+    }
+  ]
+}
